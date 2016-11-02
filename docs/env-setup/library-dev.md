@@ -121,10 +121,13 @@ module.exports = merge(base, {
   devtool: 'source-map',
   output: {
     filename: '[name].prod.js'
-  },
-  // TODO: add uglify and minify plugins etc.  
+  }  
 }
 ```
+
+To create production ready bundle: `webpack -p`
+
+The `p` flag is "production" mode and uglifies/minifies output.
 
 `webpack.test.config`
 
