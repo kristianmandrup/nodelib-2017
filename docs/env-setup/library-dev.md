@@ -42,6 +42,9 @@ Installs sync.
 `install(['ava', 'koa'], options)` where `{'--dev': true, '--save-dev': true}` for save as `devDependency` ?
 
 ### Webpack bundling
+
+Please start by reading [Getting started with webpack 2](https://blog.madewithenvy.com/getting-started-with-webpack-2-ed2b86c68783#.sjq3lkl83)
+
 - `yarn add webpack webpack-node-externals --dev`
 
 See [ava-webpack](https://github.com/thrandre/ava-webpack)
@@ -97,14 +100,16 @@ Note: We could have a `/rules` folder, with a file for each rule ;)
 // path, webpack
 const { base, merge, path } = require('./webpack.base.config')
 
-module.exports = merge(base, {
-  devtool: 'cheap-module-eval-source-map',
-  entry: ['./src/index'], // file extension after index is optional for .js files
+module.exports = {
+  context: __dirname + "/src",
+  entry: {
+    app: "./index.js",
+  },
   output: {
-    path: path.join(__dirname, '../dist'),
-    filename: 'bundle.dev.js'
-  }
-})
+    path: __dirname + "/dist",
+    filename: "[name].bundle.js",
+  },
+}
 ```
 
 For production we make a better source map and output to a production file name.
@@ -115,7 +120,7 @@ For production we make a better source map and output to a production file name.
 module.exports = merge(base, {
   devtool: 'source-map',
   output: {
-    filename: 'bundle.prod.js'
+    filename: '[name].prod.js'
   },
   // TODO: add uglify and minify plugins etc.  
 }
@@ -153,7 +158,6 @@ Also `--require babel-register`
 --webpack-config build/webpack.test.config.js
 src/{**/,/}*.test.js
 ```
-
 
 Setup webpack to first run tests, then build
 
