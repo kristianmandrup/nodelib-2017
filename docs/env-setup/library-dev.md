@@ -24,8 +24,25 @@ Remove `/usr/local/lib/node_modules/`
 *create package.json for project*
 - `yarn init`
 
+### Install dependencies
+
+Use `yarn-install` which can fallback to `npm` if needed.
+
+`yarn add yarn-install --save`
+
+```js
+const install = require('yarn-install')
+ 
+const result = install(['webpack', 'mocha'])
+//=> result, returned by child_process.spawnSync 
+```
+
+Installs sync.
+
+`install(['ava', 'koa'], options)` where `{'--dev': true, '--save-dev': true}` for save as `devDependency` ?
+
 ### Webpack bundling
-- `yarn add webpack webpack-node-externals --save-dev`
+- `yarn add webpack webpack-node-externals --dev`
 
 See [ava-webpack](https://github.com/thrandre/ava-webpack)
 
