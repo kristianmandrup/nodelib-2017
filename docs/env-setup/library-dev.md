@@ -102,9 +102,21 @@ Watch config for `test` script, will run whenever triggered, in this case in qui
 }
 ```
 
-We recommend co-locating tests with the `/src` code so it is clear which `.js` files have a `.test.js` sibling.
-If you follow this convention, you can remove the `"test"` from file `"patterns"` to match on. 
-Also remove `"jsx"` if you are not developing for React.
+We recommend co-locating tests with the code in `/src` so it becomes very clear which `.js` files have a `.test.js` sibling.
+If you follow this convention you can remove the `"test"` from file `"patterns"` to match on. 
+Also remove `"jsx"` if you are not planning to use `jsx` (mostly used for React and other modern VDOM based web frameworks).
+
+```json
+  "watch": {
+    "test": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js",
+      "quiet": true
+    }  
+  },
+```
 
 `npm run watch` to watch everything and trigger
 
@@ -148,6 +160,52 @@ Install [VSCode XO plugin](https://github.com/SamVerschueren/vscode-linter-xo) -
 
 On Mac, Cmd-P, then type: `ext install linter-xo` or go to `View->Extensions` menu.
 
+*standard*
+
+`npm install standard --save-dev`
+
+`standard --fix` to fix errors
+
+Add badge in `Readme.md`
+
+`[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)`
+
+A suitable alternative is [standard](https://github.com/feross/standard) which can also be configured/finetuned
+in `package.json`
+
+```json
+{
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      // file glob patterns
+    ],
+    "plugins": [
+      "flowtype"
+    ]
+  }
+}
+```
+
+`npm install eslint-plugin-flowtype babel-eslint --save-dev`
+
+You can also get "snazzy" colourful output and generate reports:
+
+`yarn add snazzy standard-reporter standard-summary --dev`
+
+`standard --verbose | snazzy`
+`standard | standard-reporter --stylish`
+`standard | standard-summary`
+
+Alternatively use in `.eslintrc` via [eslint config standard](https://github.com/feross/eslint-config-standard)
+
+```json
+{
+  "extends": "standard"
+}
+```
+
+
 *testing extras*
 - `yarn add ava-spec testdouble --dev`
 
@@ -186,17 +244,11 @@ Use `nyc` to run test coverage reports:
 
 `yarn add nodemon --dev`
     
-`    "watch:cover": "nodemon --quiet --watch sec --exec npm run cover -s"`
+`    "watch:cover": "nodemon --quiet --watch src --exec npm run cover -s"`
 
-Alternatively use `npm-watch` config:
+However we already have the `test` script running cover, so no need for that!
 
-```json
-"watch": {
-  "cover": {    
-    "quiet": true
-  }
-}
-```
+`"test": "npm run fix && npm run cover"` 
 
 Add to `.gitignore`
 
@@ -239,7 +291,6 @@ report
 Register repo on on [travis.io](travis.io)
 
 `.travis.yml`
-
 
 ```
 language: node_js

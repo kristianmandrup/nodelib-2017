@@ -11,7 +11,7 @@ export default class Book {
 		this.author = author;
 		this.title = title;
 
-		if (name === 'x') {
+		if (title === 'x') {
 			this.x = true 
 		}
 	} 

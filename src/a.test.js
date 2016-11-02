@@ -5,7 +5,7 @@ import A from './a'
 test('fetch', t => {
 	let fetch = td.function();
 	let a = new A('v')
-	t.is(a.name, 'v')
+	t.is(a.title, 'v')
 
 	td.when(fetch(42)).thenReturn('Jane User');
 
