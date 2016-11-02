@@ -10,6 +10,7 @@
 - code coverage: [nyc](https://github.com/istanbuljs/nyc) with [coveralls.io](https://www.npmjs.com/package/coveralls)
 - Bundling [webpack]()
 - Complexity analysis [plato]
+- webpack bundling for distribution
 
 ## Recipe
 
@@ -23,6 +24,140 @@ Remove `/usr/local/lib/node_modules/`
 *create package.json for project*
 - `yarn init`
 
+### Webpack bundling
+- `yarn add webpack webpack-node-externals --save-dev`
+
+See [ava-webpack](https://github.com/thrandre/ava-webpack)
+
+- `yarn add ava-webpack`
+
+`webpack.base.config.js`
+
+```js
+const nodeExternals = require('webpack-node-externals')
+const merge = require('lodash.merge')
+const path = require('path')
+const webpack = require('webpack')
+
+const base = {
+  // devtool: 'source-map',
+  target: 'node', // in order to ignore built-in modules like path, fs, etc.
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
+  module: {
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'eslint'
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          babelrc: true,
+          cacheDirectory: true
+        }
+      }
+    ]
+  }
+}
+
+module.exports = {
+  base,
+  merge,
+  path,
+  webpack
+}
+```
+
+Note: We could have a `/rules` folder, with a file for each rule ;)
+
+`webpack.dev.config`
+
+```js
+// path, webpack
+const { base, merge, path } = require('./webpack.base.config')
+
+module.exports = merge(base, {
+  devtool: 'cheap-module-eval-source-map',
+  entry: ['./src/index'], // file extension after index is optional for .js files
+  output: {
+    path: path.join(__dirname, '../dist'),
+    filename: 'bundle.dev.js'
+  }
+})
+```
+
+For production we make a better source map and output to a production file name.
+
+`webpack.prod.config`
+
+```js
+module.exports = merge(base, {
+  devtool: 'source-map',
+  output: {
+    filename: 'bundle.prod.js'
+  },
+  // TODO: add uglify and minify plugins etc.  
+}
+```
+
+`webpack.test.config`
+
+```js
+const { base, merge } = require('./webpack.base.config')
+
+const test = merge(base, {
+  devtool: 'cheap-module-eval-source-map'
+})
+
+module.exports = test
+```
+
+Have the `webpack.config-test.js` contain all the options, including `--polyfill` and `--clean` 
+
+```
+--clean
+--polyfill babel-polyfill 
+```
+
+Also `--require babel-register` 
+
+```
+--bail
+--check-leaks
+--reporter spec
+--ui bdd
+--colors
+--compilers js:babel-core/register
+--require source-map-support/register
+--webpack-config build/webpack.test.config.js
+src/{**/,/}*.test.js
+```
+
+
+Setup webpack to first run tests, then build
+
+```
+"webpack": "npm run webpack:test && npm run webpack:build",
+```
+
+Run tests
+
+```
+"webpack:test": "ava-webpack --webpack-config ./build/webpack.test.config.js",
+```
+
+Build for dev or prod (uglify and minify etc.)
+
+```
+"webpack:build": "npm run webpack:build:dev",
+"webpack:build:dev": "webpack --webpack-config ./build/webpack.dev.config.js ",
+"webpack:build:prod": "webpack --webpack-config ./build/webpack.prod.config.js ",
+```
+
 ## Ava test config
 
 *install ava binary on system*
@@ -31,7 +166,7 @@ Remove `/usr/local/lib/node_modules/`
 *init ava on project*
 `ava --init`
 
-Configure `ava` entry in `package.json`. 
+Configure `ava` entry in `package.json`
 
 ```json
   "ava": {
@@ -60,7 +195,7 @@ Update `ava` config. We need to always require `babel-register` and `babel-polyf
       "babel-register",
       "babel-polyfill"
     ]
-  },
+  }
 ```
 
 *Add babel: preset-latest minimal*
@@ -201,10 +336,19 @@ Alternatively use in `.eslintrc` via [eslint config standard](https://github.com
 
 ```json
 {
-  "extends": "standard"
+  "extends": "standard",
+  "installedESLint": true,
+  "plugins": [
+    "standard",
+    "promise",
+    "babel",
+    "filenames"
+  ],
+  "rules": {
+    "filenames/match-regex": [2, "^[a-z-\\.]+$", true]
+  }
 }
 ```
-
 
 *testing extras*
 - `yarn add ava-spec testdouble --dev`
@@ -238,6 +382,17 @@ Use `nyc` to run test coverage reports:
 ```
     "report": "nyc report --reporter=html",
     "cover": "nyc ava",
+```
+
+`.nycrc` config file:
+
+```
+{
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ]
+}
 ```
 
 *watch and cover*
@@ -340,7 +495,46 @@ npm install --save-dev flow-bin
 
 Add plugin `"transform-flow-strip-types"` to `.babelrc`
 
+```json
+{
+  "presets": ["latest-minimal"],
+  "plugins": [
+    "transform-es2015-duplicate-keys",
+    "transform-es2015-modules-commonjs",
+    "syntax-trailing-function-commas",
+    "transform-async-to-generator",
+    "transform-decorators-legacy"
+  ],
+```  
+
 Now the documentation will pick up the flow types :) 
+
+### gitignore
+
+```
+node_modules
+dist
+*.log
+report
+.tmp
+coverage
+```
+
+### Editors
+
+VSC, add a `tsconfig.json`
+
+```
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowJs": true    
+  },  
+  "exclude": [
+    "node_modules"
+  ]
+}
+```
 
 ### Decorator
 
