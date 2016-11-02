@@ -267,6 +267,8 @@ Then add a few `docs` script
 - [Getting started](https://github.com/documentationjs/documentation/blob/master/docs/GETTING_STARTED.md)
 - [JsDocs 3 guide](http://usejsdoc.org/about-getting-started.html)
 
+Also see [docs](https://github.com/documentationjs/documentation/tree/master/docs) for recipes and more info on documentation.
+
 To view Markdown docs try [typora](http://www.typora.io/)
 Typora [themes](http://theme.typora.io/)
 
@@ -283,7 +285,11 @@ touch .flowconfig
 npm install --save-dev flow-bin
 ```
 
+`yarn add babel-plugin-transform-flow-strip-types --dev`
 
+Add plugin `"transform-flow-strip-types"` to `.babelrc`
+
+Now the documentation will pick up the flow types :) 
 
 ### Decorator
 

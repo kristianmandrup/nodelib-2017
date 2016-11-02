@@ -5,6 +5,7 @@
     "transform-es2015-modules-commonjs",
     "syntax-trailing-function-commas",
     "transform-async-to-generator",
-    "transform-decorators-legacy"
+    "transform-decorators-legacy",
+    "transform-flow-strip-types"
   ]
 }
