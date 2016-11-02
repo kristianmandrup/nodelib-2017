@@ -2,3 +2,7 @@ node_modules
 dist
 *.log
 report
+.nyc_output
+.yarnclean
+coverage
+documentation

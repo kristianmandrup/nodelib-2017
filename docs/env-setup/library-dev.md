@@ -109,7 +109,7 @@ Also remove `"jsx"` if you are not developing for React.
 `npm run watch` to watch everything and trigger
 
 *lint style checks and fixes*
-- `yarn add xo eslint-plugin-babel babel-eslint eslint-plugin-filenames --dev`
+- `yarn add xo eslint eslint-plugin-babel babel-eslint eslint-plugin-filenames --dev`
 
 Installs `babel-eslint` to be used as the ESLint parser. This is useful when we are using advanced language 
 features *such as decorators etc) that ESLint doesn't yet support.
@@ -132,9 +132,17 @@ In `package.json` add `xo` eslint settings:
   }
 ```
 
-In `test` script, prefix with `xo &&` to run `xo` before running tests
+In `test` script, prefix with `xo &&` to run `xo` before running tests.
+We also add a `fix` script to have `xo` automatically fix the code!
 
-`"test": "xo && ava"`
+```
+"test": "xo && ava",
+"fix": "xo --fix -- -s",
+```
+
+We could even have it run and fi the code before running tests!
+
+`"test": "npm run fix && ava",`
 
 Install [VSCode XO plugin](https://github.com/SamVerschueren/vscode-linter-xo) - let's you autofix!
 
@@ -143,15 +151,41 @@ On Mac, Cmd-P, then type: `ext install linter-xo` or go to `View->Extensions` me
 *testing extras*
 - `yarn add ava-spec testdouble --dev`
 
+```js
+import td from 'testdouble'
+
+test('fetch', t => {
+	let fetch = td.function();
+	td.when(fetch(42)).thenReturn('Jane User');
+
+	t.is(fetch(42), 'Jane User');
+});
+```
+
+or using new BDD syntax from `ava-spec`
+
+```js
+import test from 'ava-spec';
+
+test('AVA Spec is 100% compatible with ava', t => {
+  t.is(true, true);
+});
+```
+
 *coverage*
-- `yarn add nyc coveralls --dev`
+- `yarn add nyc --dev`
 
-Register repo on [coveralls.io](coveralls.io)
+Use `nyc` to run test coverage reports:
 
-"takes json-cov output into stdin and POSTs to coveralls.io"
+```
+    "report": "nyc report --reporter=html",
+    "cover": "nyc ava",
+```
+
+*watch and cover*
 
 `yarn add nodemon --dev`
-
+    
 `    "watch:cover": "nodemon --quiet --watch sec --exec npm run cover -s"`
 
 Alternatively use `npm-watch` config:
@@ -170,6 +204,18 @@ Add to `.gitignore`
 coverage
 .nyc_output
 ```
+
+### Coveralls reporting
+
+- `yarn add coveralls --dev`
+
+Register repo on [coveralls.io](coveralls.io)
+
+"takes json-cov output into stdin and POSTs to coveralls.io"
+
+Add a `coverall` script to `package.json`
+
+`    "coveralls": "npm-run nyc report --reporter=text-lcov | npm-run coveralls"`
 
 *complexity analysis*
 - `yarn add plato --dev`
@@ -194,9 +240,6 @@ Register repo on on [travis.io](travis.io)
 
 `.travis.yml`
 
-Add a `coverall` script to `package.json`
-
-`    "coveralls": "npm-run nyc report --reporter=text-lcov | npm-run coveralls"`
 
 ```
 language: node_js
@@ -206,6 +249,41 @@ node_js:
 after_script:
 - npm run coveralls
 ```
+
+### Documentation
+
+`yarn add global documentation`
+
+`documentation build ./index.js -f md > docs/lib/API.md`
+
+Then add a few `docs` script
+
+```   
+    "docs": "npm run docs:html && npm run docs:md",
+    "docs:html": "documentation build ./index.js -f html -o documentation/lib/html",
+    "docs:md": "documentation build ./index.js -f md > documentation/lib/md/API.md"
+```
+
+- [Getting started](https://github.com/documentationjs/documentation/blob/master/docs/GETTING_STARTED.md)
+- [JsDocs 3 guide](http://usejsdoc.org/about-getting-started.html)
+
+To view Markdown docs try [typora](http://www.typora.io/)
+Typora [themes](http://theme.typora.io/)
+
+*Mac OSX only*
+- [macdown](http://macdown.uranusjr.com/)
+- [mou](http://25.io/mou/)
+
+[Add as default app](http://www.imore.com/how-change-default-apps-os-x) for `.md` documents
+
+### Add flow
+
+```
+touch .flowconfig
+npm install --save-dev flow-bin
+```
+
+
 
 ### Decorator
 

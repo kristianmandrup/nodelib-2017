@@ -1,6 +1,17 @@
-import test from 'ava';
-import goofy from './goofy';
+import test from 'ava'
+import td from 'testdouble'
+import A from './a'
 
-test(t => {
-	t.deepEqual([1, 2], [1, 2]);
+test('fetch', t => {
+	let fetch = td.function();
+	let a = new A('v')
+	t.is(a.name, 'v')
+
+	td.when(fetch(42)).thenReturn('Jane User');
+
+	t.is(fetch(42), 'Jane User');
+});
+
+test('+', t => {
+	t.is(1 + 1, 2);
 });
