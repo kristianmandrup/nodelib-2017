@@ -1,18 +1,10 @@
+import test from 'ava';
+import category from './'
 import categories from '../categories'
-import dispatch from './dispatcher'
 
-class Category {
-  constructor(opts = {}) {   
-    this.answers = {}
-    this.q = categories 
-  }
-
-  async ask() {
-    let dispatcher = await dispatch(this.q)
-    return await dispatcher.ask()
-  }
-}
-
-export default (opts) => {
-  return new Category(opts)
-}
+test('create category', t => {
+  console.log('categories', categories)
+  let c = category(categories)
+  t.deepEqual(c.answers, {}, 'empty answers')
+  t.is(c.q.length, 2, 'some categories')
+})

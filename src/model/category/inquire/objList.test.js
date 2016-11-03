@@ -1,29 +1,17 @@
-import Base from './base'
-import dispatch from '../dispatcher'
+import test from 'ava';
+import objList from './objList';
 
-class ObjList extends Base {
-  // can be either Object or Array
-  constructor(q, ctx) {   
-    super(q, ctx, 'objList')
-    this.categories = q
-    this.keys = Object.keys(this.categories)
+test('simple question', t => {
+  let q = {
+    style: {
+      name: 'hello'
+    }    
   }
 
-  // iterate and resolve
-  // we can build up nested hierarchy this way
-  async ask() {
-    for (let key of this.keys) {
-      let value = this.categories[key]
-      let result = await dispatch(value, this.ctx)
-      this.ctx[key] = result 
-    }
-    return this.ctx 
-  }
-}
+  let l = objList(q, {})
 
-const list = (categoriesObj) => {
-  return new ObjList(categoriesObj).ensureValid()
-}
-
-export default list 
-    
+  t.is(l.type, 'objList');
+  t.is(l.categories, q);
+  t.deepEqual(l.keys, ['style']);
+  t.deepEqual(l.ctx, {});
+});

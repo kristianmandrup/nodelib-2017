@@ -1,16 +1,10 @@
-import Base from './base'
+import test from 'ava';
+import list from './list';
 
-class List extends Base {
-  // must be a question array ready for inquirer.prompt or looping question...
-  constructor(q, ctx) {   
-    super(q, ctx, 'list')
-    this.checkValid = this.validator.isQuestionList
-    this.prompter = this.inquisitor.prompt
-  }
-}
+test(t => {
+  let l = list([], {})
 
-export default (q, ctx) => {
-  return new List(q, ctx).ensureValid()
-}
- 
-    
+  t.is(l.type, 'list');
+  t.deepEqual(l.q, []);
+  t.deepEqual(l.ctx, {});
+});

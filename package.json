@@ -8,6 +8,7 @@
   "scripts": {
     "bn": "npm-run babel-node $@",
     "test": "npm run fix && npm run cover",
+    "ava": "ava",
     "lint": "xo",
     "fix": "xo --fix -- -s",
     "watch": "npm-watch",

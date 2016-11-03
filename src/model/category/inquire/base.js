@@ -2,7 +2,7 @@ import { log, stringify } from '../../../utils'
 import { merge } from 'lodash'
 import validator from '../question/validator'
 import inquisitor from 'master-inquisitor'
-import dispatch from '../dispatcher'
+// import dispatch from '../dispatcher'
 
 export default class Base {
   constructor(q, ctx  = {}, type) {   
@@ -11,7 +11,7 @@ export default class Base {
     this.ctx = ctx
     this.log = log
     this.merge = merge
-    this.dispatch = dispatch 
+    // this.dispatch = dispatch 
     this.inquisitor = inquisitor
     this.validator = validator(q)
   }

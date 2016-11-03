@@ -1,5 +1,5 @@
 import Base from './base'
-import dispatch from '../dispatcher'
+// import dispatch from '../dispatcher'
 
 class ObjList extends Base {
   // can be either Object or Array
@@ -14,15 +14,15 @@ class ObjList extends Base {
   async ask() {
     for (let key of this.keys) {
       let value = this.categories[key]
-      let result = await dispatch(value, this.ctx)
-      this.ctx[key] = result 
+      // let result = await dispatch(value, this.ctx)
+      this.ctx[key] = {} //result 
     }
     return this.ctx 
   }
 }
 
 const list = (categoriesObj) => {
-  return new ObjList(categoriesObj).ensureValid()
+  return new ObjList(categoriesObj) //.ensureValid()
 }
 
 export default list 

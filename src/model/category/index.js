@@ -1,8 +1,7 @@
-import categories from '../categories'
 import dispatch from './dispatcher'
 
 class Category {
-  constructor(opts = {}) {   
+  constructor(categories) {   
     this.answers = {}
     this.q = categories 
   }

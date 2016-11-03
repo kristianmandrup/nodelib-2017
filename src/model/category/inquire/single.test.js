@@ -1,14 +1,14 @@
-import Base from './base'
+import test from 'ava';
+import single from './single';
 
-class Single extends Base {
-  // can be either Object or Array
-  constructor(q, ctx) {   
-    super(q, ctx, 'single')
-    this.checkValid = this.validator.isQuestion
-    this.prompter = this.inquisitor.prompt 
+test('simple question', t => {
+  let q = {
+    name: 'hello'    
   }
-}
 
-export default (q) => {
-  return new Single(q).ensureValid()
-}
+  let l = single(q, {})
+
+  t.is(l.type, 'single');
+  t.is(l.q, q);
+  t.deepEqual(l.ctx, {});
+});

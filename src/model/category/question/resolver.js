@@ -1,5 +1,5 @@
 import validator from './validator'
-import dispatch from '../dispatcher'
+// import dispatch from '../dispatcher'
 import { log } from '../../../utils'
 
 class Resolver {
@@ -27,8 +27,9 @@ class Resolver {
     let v = this.value
     if (typeof v !== 'object') return
     let q = v.questions || v.default
-    if (q) {       
-      return await dispatch(q, this.ctx)
+    if (q) {
+      return ':dispatch'       
+      // return await dispatch(q, this.ctx)
     }
     this.questionObjs = v
     return this   
