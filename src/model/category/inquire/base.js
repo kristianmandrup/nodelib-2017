@@ -5,8 +5,9 @@ import inquisitor from 'master-inquisitor'
 import dispatch from '../dispatcher'
 
 export default class Base {
-  constructor(q) {   
+  constructor(q, ctx) {   
     this.q = q
+    this.ctx = ctx
     this.log = log
     this.merge = merge
     this.dispatch = dispatch 
@@ -21,7 +22,22 @@ export default class Base {
     return this
   }
 
+  // always merge result into ctx
   async ask() {
+    let result = await this.askList()
+    this.merge(this.ctx, result)
+    return this.ctx 
+  }
+
+  // TODO: when allow use of custom prompts
+  async askCustom() {
     return await this.prompter(this.q)
-  }    
+  }
+
+  // ensure we always get object back as result by asking with prompt
+  async askList() {
+    let q = this.q
+    q = Array.isArray(q) ? q : [q]
+    return await this.inquisitor.prompt(q)
+  }
 }

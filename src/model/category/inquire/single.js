@@ -7,7 +7,7 @@ class Single {
   constructor(q, ctx) {   
     super(q, ctx)
     this.checkValid = this.validator.isQuestion
-    this.prompter = this.inquisitor.question 
+    this.prompter = this.inquisitor.prompt 
   }
 }
 

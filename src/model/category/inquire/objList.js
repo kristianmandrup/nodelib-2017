@@ -8,10 +8,13 @@ class ObjList extends Base {
   }
 
   // iterate and resolve
+  // we can build up nested hierarchy this way
   async ask() {
     for (let name of categories) {
-      let result = await dispatch(name)
-      this.ctx[name] = result
+      let ctx = this.ctx[name]
+      let value = categories[name]
+      let result = await dispatch(value, ctx)
+      this.ctx[name] = result 
     }
     return this.ctx 
   }
