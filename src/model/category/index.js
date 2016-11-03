@@ -9,13 +9,14 @@ class Category {
     this.questions = props.questions        
   }
 
-  async ask() {
+  async askAll() {
     // log('ask questions', this.name, this.questions, this.inquiry)    
-    await this.inquiry.ask()
+    let result = await this.inquiry.askAll()
+    return result
   }
 
   get inquiry() {
-    return inquiry(this.questions)
+    return inquiry(this.name, this.questions)
   }
 }
 

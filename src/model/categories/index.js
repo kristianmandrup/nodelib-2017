@@ -1,13 +1,13 @@
 const categories = [
   'analysis',
   'bundler',
-  'compiler',
-  'coverage',
-  'documentation',
-  'lint',
-  'style',
-  'test',
-  'types',
+  // 'compiler',
+  // 'coverage',
+  // 'documentation',
+  // 'lint',
+  // 'style',
+  // 'test',
+  // 'types',
 ]
 
 export default categories.reduce((obj, category) => {

@@ -1,10 +1,12 @@
 import categories from '../categories'
 import category from './'
 import { log } from '../../utils'
+import { merge } from 'lodash'
 
 class Collector {
   constructor(opts = {}) {
-    this.categories = categories    
+    this.categories = categories   
+    this.answers = {} 
   }
 
   forCategory(name) {    
@@ -20,12 +22,13 @@ class Collector {
     let answers
     for (let name of this.names) {
       try {
-        answers = await this.forCategory(name).ask()
+        answers = await this.forCategory(name).askAll()
+        this.answers = merge({}, this.answers, answers)
       } catch (err) {
         log(err)
-      }      
-      log(name, answers)
+      }            
     }
+    log('all answers', this.names, this.answers)    
   } 
 }
 

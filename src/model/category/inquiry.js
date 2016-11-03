@@ -1,22 +1,38 @@
 import inquisitor from 'master-inquisitor'
 import { log } from '../../utils'
+import { merge } from 'lodash'
 
 class Inquiry {
-  constructor(questions) {
+  constructor(name, questions) {
+    this.name = name
     this.questions = questions
+    this.allQuestions = Object.values(this.questions)
+    this.answers = {}
+    // log('all questions', this.allQuestions) 
   }
 
-  get allQuestions() {
-    return Object.values(this.questions)
-  }
-
-  async ask() {
+  async askAll() {
     for (let question of this.allQuestions) {
-      return await inquisitor.question(question)
-    }      
+      let answers = await this.ask(question)
+      this.answers = merge({}, this.answers, answers)
+    }
+    return this.answers    
   }
+
+  async ask(question) {
+    if (!question) return
+    if (typeof question !== 'object') return
+    if (!question.message) {
+      let result = await inquiry(this.name, question).askAll()
+      return result.answers      
+    } else {      
+      return await inquisitor.prompt([question])            
+    }
+  }      
 }
 
-export default (questions) => {
-  return new Inquiry(questions)
+const inquiry = (name, questions) => {
+  return new Inquiry(name, questions)
 }
+
+export default inquiry
