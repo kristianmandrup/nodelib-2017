@@ -1,7 +1,7 @@
 const categories = [
-  'analysis',
-  'bundler',
-  // 'compiler',
+//  'analysis',
+//  'bundler',
+  'compiler',
   // 'coverage',
   // 'documentation',
   // 'lint',

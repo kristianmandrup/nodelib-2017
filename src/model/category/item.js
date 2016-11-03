@@ -2,14 +2,16 @@ import { log } from '../../utils'
 import inquiry from './inquiry'
 import index from '../categories'
 
-class Category {
+class CategoryItem {
   constructor(name, props = {}) {
     this.name = name
+    log('props', props)
     this.props = props  
-    this.questions = props.questions        
+    this.questions = props.questions || props        
   }
 
-  async askAll() {
+  async collectAll() {
+    log('ask category:', this.name)
     // log('ask questions', this.name, this.questions, this.inquiry)    
     let result = await this.inquiry.askAll()
     return result
@@ -21,5 +23,5 @@ class Category {
 }
 
 export default (name, props) => {
-  return new Category(name, props)
+  return new CategoryItem(name, props)
 }

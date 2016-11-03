@@ -7,10 +7,12 @@ const filters = {
 
 filters.latest = filters._2016_.concat(filters._2017_) 
 
-export const plugins = (ctx) => {
-  let filter = filters[ctx.preset]
+export const plugins = (ctx = {}) => {
+  console.log('plugins ctx', ctx)
+  let filter = filters[ctx.preset] || []
   let choices = pluginChoices.filter(choice => filter.includes(choice)) 
 
+  console.log('choices', choices)
   return {
     name: 'babelPlugins',
     type: 'checkbox',

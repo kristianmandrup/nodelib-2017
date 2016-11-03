@@ -1,1 +1,1 @@
-export { default as questions } from './babel'
+export { default as babel } from './babel'

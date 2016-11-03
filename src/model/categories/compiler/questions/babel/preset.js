@@ -6,7 +6,9 @@ export const preset = {
   default: 'travis'
 }
 
-export const stage = (ctx) => {
+export const stage = (ctx = {}) => {
+  console.log('stage', ctx)
+
   return {
     name: 'stage',
     type: 'list',
@@ -16,19 +18,19 @@ export const stage = (ctx) => {
   }      
 }
 
-import moment from 'moment'
+// import moment from 'moment'
 
-const weeksSinceNov2016 = moment().diff('2016-11-01', 'weeks');
+// const weeksSinceNov2016 = moment().diff('2016-11-01', 'weeks');
 
-export const envTargets = {
-  browsers: {
-    name: 'browsers',
-    message: `Browsers to target`,
-    default: 'last 2 versions'
-  },
-  chrome: {
-    name: 'chrome',
-    message: `Chrome browser version`,
-    default: 52 + (weeksSinceNov2016 / 6) //we expect a new vrsion approx every 6 weeks
-  }
-}
+// export const envTargets = {
+//   browsers: {
+//     name: 'browsers',
+//     message: `Browsers to target`,
+//     default: 'last 2 versions'
+//   },
+//   chrome: {
+//     name: 'chrome',
+//     message: `Chrome browser version`,
+//     default: 52 + (weeksSinceNov2016 / 6) //we expect a new vrsion approx every 6 weeks
+//   }
+// }

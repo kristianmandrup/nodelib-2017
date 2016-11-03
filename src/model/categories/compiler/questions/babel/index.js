@@ -1,4 +1,9 @@
-export { decorators } from './decorators'
-export { plugins } from './plugins'
-export { preset, stage, envTargets  } from './preset'
+import * as decorators from './decorators'
+import { plugins } from './plugins'
+import * as preset from './preset'
 
+export default {
+  // plugins,
+  // decorators,
+  preset
+}

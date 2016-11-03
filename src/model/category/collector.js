@@ -1,35 +1,19 @@
 import categories from '../categories'
-import category from './'
+import list from './list'
 import { log } from '../../utils'
 import { merge } from 'lodash'
 
 class Collector {
-  constructor(opts = {}) {
-    this.categories = categories   
-    this.answers = {} 
+  constructor(opts = {}) {   
+    this.answers = {}
+    this.categoriesObj = categories 
   }
 
-  forCategory(name) {    
-    return category(name, this.categories[name])
-  }
-
-  get names() {
-    return Object.keys(this.categories)
-  }
-
-  async collectAnswers() {
+  async collectAll() {
     // for each category
-    let answers
-    for (let name of this.names) {
-      try {
-        answers = await this.forCategory(name).askAll()
-        this.answers = merge({}, this.answers, answers)
-      } catch (err) {
-        log(err)
-      }            
-    }
-    log('all answers', this.names, this.answers)    
-  } 
+    log('collector', this.categoriesObj)
+    return await list(this.categoriesObj).collectAll()
+  }
 }
 
 export default (opts) => {

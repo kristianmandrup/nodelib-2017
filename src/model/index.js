@@ -7,7 +7,7 @@ class Model {
   }
 
   async run() {
-    await this.collector().collectAnswers()
+    await this.collector().collectAll()
   }
 }
 
