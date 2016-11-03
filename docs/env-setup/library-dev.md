@@ -172,14 +172,16 @@ Have the `webpack.config-test.js` contain all the options, including `--polyfill
 
 Also `--require babel-register` 
 
+This is for `mocha-webpack` in `mocha-webpack.opts` (or `mocha.opts`)
+
 ```
 --bail
 --check-leaks
 --reporter spec
 --ui bdd
 --colors
---compilers js:babel-core/register
---require source-map-support/register
+--compilers js:babel-core/register // only valid for mocha.opts
+--require source-map-support/register babel-register
 --webpack-config build/webpack.test.config.js
 src/{**/,/}*.test.js
 ```
