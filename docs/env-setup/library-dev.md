@@ -12,6 +12,28 @@
 - Complexity analysis [plato]
 - webpack bundling for distribution
 
+## Tools to create
+
+[doc-gen]() - Tool that generates docs indexes to navigate project docs. Also generates docs for generator choices!
+[sf]() - Script Finder CLI, can filter scripts using regular expressions
+
+`sf` should allow for a special entry in `package.json` which describes each script in "scripts"
+
+```json
+"sf": {
+  "test:mocha": "runs mocha tests and coverage"
+  ...
+}
+```
+
+`sf test:` - display info for all script keys that match `/test:/`
+
+```
+test                 | runs default tests
+test:mocha           | runs mocha tests and coverage
+test:cov             | runs default tests and coverage
+```
+
 ## Recipe
 
 Remove `/usr/local/lib/node_modules/` 
