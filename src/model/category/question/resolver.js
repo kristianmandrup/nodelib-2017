@@ -8,12 +8,13 @@ class Resolver {
   }
 
   resolve() {
+    let v = this.value
     switch (this.validator.type) {
       case ':question':
-        this.questions = [value]
+        this.questions = [v]
         return this
       case ':questions':
-        this.questions = this.value
+        this.questions = v
         return this
       default:
         return this.resolveFunction() || this.resolveObjs() 
@@ -21,8 +22,13 @@ class Resolver {
   }
 
   resolveObjs() {
-    if (typeof value !== 'object') return
-    this.questionObjs = value
+    let v = this.value
+    if (typeof q !== 'object') return
+    let q = v.questions || v.default
+    if (q) {       
+      return resolve(q, this.ctx)
+    }
+    this.questionObjs = v
     return this   
   }
 
@@ -31,13 +37,16 @@ class Resolver {
   }
 
   resolveFunction() {
-    if (typeof this.value !== 'function') return
-    let fun = this.value 
+    let v = this.value
+    if (typeof v !== 'function') return
+    let fun = v 
     this.value = fun(this.ctx);
     return this.resolve()
   }
 }  
 
-export default (value, ctx) => {
+const resolve = (value, ctx) => {
   return new Resolver(value, ctx)
 }
+
+export default
