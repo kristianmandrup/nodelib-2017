@@ -1,12 +1,13 @@
-import { log } from '../../utils'
+import { log, stringify } from '../../../utils'
 import { merge } from 'lodash'
 import validator from '../question/validator'
 import inquisitor from 'master-inquisitor'
 import dispatch from '../dispatcher'
 
 export default class Base {
-  constructor(q, ctx) {   
+  constructor(q, ctx  = {}, type) {   
     this.q = q
+    this.type = type
     this.ctx = ctx
     this.log = log
     this.merge = merge
@@ -14,12 +15,17 @@ export default class Base {
     this.inquisitor = inquisitor
     this.validator = validator(q)
   }
+
+  checkValid() {
+    return true
+  }
   
   ensureValid() {
-    if (!this.checkValid()) {
-      throw `Invalid question value ${this.q}`
-    }
     return this
+    // if (!this.checkValid()) {
+    //   throw `Invalid question value ${stringify(this.q)} : ${this.type}`
+    // }
+    // return this
   }
 
   // always merge result into ctx

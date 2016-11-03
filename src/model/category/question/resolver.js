@@ -1,4 +1,6 @@
 import validator from './validator'
+import dispatch from '../dispatcher'
+import { log } from '../../../utils'
 
 class Resolver {
   constructor(value, ctx) {
@@ -7,7 +9,7 @@ class Resolver {
     this.validator = validator(value)
   }
 
-  resolve() {
+  async resolve() {
     let v = this.value
     switch (this.validator.type) {
       case ':question':
@@ -17,16 +19,16 @@ class Resolver {
         this.questions = v
         return this
       default:
-        return this.resolveFunction() || this.resolveObjs() 
+        return this.resolveFunction() || await this.resolveObjs() 
     }  
   }
 
-  resolveObjs() {
+  async resolveObjs() {
     let v = this.value
-    if (typeof q !== 'object') return
+    if (typeof v !== 'object') return
     let q = v.questions || v.default
     if (q) {       
-      return resolve(q, this.ctx)
+      return await dispatch(q, this.ctx)
     }
     this.questionObjs = v
     return this   
@@ -36,12 +38,12 @@ class Resolver {
     throw `Unable to resolve: ${this.value}`
   }
 
-  resolveFunction() {
+  async resolveFunction() {
     let v = this.value
     if (typeof v !== 'function') return
     let fun = v 
     this.value = fun(this.ctx);
-    return this.resolve()
+    return await this.resolve()
   }
 }  
 
@@ -49,4 +51,4 @@ const resolve = (value, ctx) => {
   return new Resolver(value, ctx)
 }
 
-export default
+export default resolve

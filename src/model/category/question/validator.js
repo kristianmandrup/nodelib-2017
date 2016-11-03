@@ -1,3 +1,5 @@
+import { log, stringify } from '../../../utils'
+
 class Validator {
   constructor(value) {
     if (!value) {
@@ -6,7 +8,7 @@ class Validator {
     this.value = value
   }
 
-  get isQuestionList() {
+  isQuestionList() {
     let list = this.value
     if (!Array.isArray(list)) return
     return this.isQuestion(list[0])
@@ -15,15 +17,15 @@ class Validator {
   isQuestion(q) {
     q = q || this.value
     if (typeof q !== 'object') return
-    if (!q.name) {
-      throw `Invalid list, first elements must be a question: ${q}`
+    if (q.name) {
+      return true
     }
-    return true
+    return false
   }  
 
   get type() {
     if (this.isQuestion()) return ':question'
-    if (this.isQuestionList) return ':questions'    
+    if (this.isQuestionList()) return ':questions'    
   }    
 }
 
