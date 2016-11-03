@@ -1,4 +1,4 @@
-import questions from './questions'
+import * as questions from './questions'
 import modules from './modules'
 import info from './info'
 
@@ -7,11 +7,4 @@ export default {
   questions,
   info,  
   modules
-}
-
-export default {
-  questions: require('./questions'),
-  modules: {
-    dev: ['rollup', 'webpack']
-  } 
 }

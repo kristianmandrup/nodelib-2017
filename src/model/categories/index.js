@@ -10,18 +10,7 @@ const categories = [
   'types',
 ]
 
-const index = categories.reduce((obj, category) => {
-  obj[category] = require('./' + category)
+export default categories.reduce((obj, category) => {
+  obj[category] = require('./' + category).default
   return obj
 }, {})
-
-class Categorizer {
-  constructor(name) {
-    this.name = name
-    this.index = index
-  }
-}
-
-const categorize = (name) => {
-  return new Categorizer(name)
-}

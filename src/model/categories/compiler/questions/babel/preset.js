@@ -16,7 +16,9 @@ export const stage = (ctx) => {
   }      
 }
 
-const monthsSinceNov2016 = moment().diff('2016-11-01', 'weeks');
+import moment from 'moment'
+
+const weeksSinceNov2016 = moment().diff('2016-11-01', 'weeks');
 
 export const envTargets = {
   browsers: {

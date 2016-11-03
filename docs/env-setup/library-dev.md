@@ -38,7 +38,7 @@ test:cov             | runs default tests and coverage
 
 Remove `/usr/local/lib/node_modules/` 
 
-`yarn add babel-cli -g`
+`yarn add babel-cli --dev`
 
 *bonus npm tools*
 `yarn add npm-run npm-quick-run npm-watch -g` 
